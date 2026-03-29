@@ -37,4 +37,16 @@ public class CategoryServiceImplementation implements CategoryService{
 
         return "Category with the ID: " + id + " is successfully removed.";
     }
+
+    @Override
+    public void updateCategory(Category updatedCategory, Long id) {
+        Category currentCategory = categories
+                .stream()
+                .filter(c -> c.getCategoryId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with categoryId: "+id + " is not found"));
+
+        currentCategory.setCategoryId(id);
+        currentCategory.setCategoryName(updatedCategory.getCategoryName());
+    }
 }
