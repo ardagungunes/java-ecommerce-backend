@@ -1,7 +1,9 @@
 package com.eccomerceApp.project.Service;
 
 import com.eccomerceApp.project.Model.Category;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,5 +24,17 @@ public class CategoryServiceImplementation implements CategoryService{
         userId += 1;
         category.setCategoryId(userId);
         categories.add(category);
+    }
+
+    @Override
+    public String deleteCategory(Long id) {
+
+        boolean removed = this.categories.removeIf(c -> c.getCategoryId().equals(id));
+
+        if (!removed) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found with ID: " + id);
+        }
+
+        return "Category with the ID: " + id + " is successfully removed.";
     }
 }
